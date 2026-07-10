@@ -1,0 +1,28 @@
+CERTIFICATION NOTES - Volume Booster
+
+How to test:
+
+1. Install the extension via "Load unpacked".
+2. Open any page with an audio or video element (e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ).
+3. Click the extension icon in the toolbar to open the popup.
+4. Drag the slider from 1.0x to 3.0x. The audio volume should increase immediately.
+5. Toggle "Quality Protection" on and off at high boost (4.0x-5.0x). When on, clipping is suppressed; when off, you may hear distortion on loud peaks.
+6. Refresh the page. The boost level should persist (no need to reopen the popup).
+7. Navigate to a different site with media (e.g., https://soundcloud.com). The booster should work there too.
+
+Known limitation:
+
+Sites that create their own AudioContext and connect media elements to it before the content script runs (e.g., YouTube, Spotify) cannot be boosted. createMediaElementSource() throws when the element is already connected to another AudioContext. The element is skipped silently; no error is shown. This is a browser-level constraint and not a bug.
+
+Permissions usage:
+
+- storage: persists a single number (boost level 1.0-5.0) via chrome.storage.sync. No personal data.
+- host_permissions (<all_urls>): required for the content script to inject into all pages where media may play.
+
+Code origin:
+
+All code is self-contained in the extension package. No remote scripts, no external dependencies at runtime. The package size is under 15 KB.
+
+Contact:
+
+https://github.com/jingshouyan/volume-booster/issues
