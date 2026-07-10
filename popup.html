@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <style>
     body {
-      width: 220px;
+      width: 240px;
       padding: 16px;
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -32,7 +32,7 @@
     }
     input[type="range"] {
       width: 100%;
-      margin: 8px 0 4px;
+      margin: 8px 0 12px;
       -webkit-appearance: none;
       appearance: none;
       height: 6px;
@@ -53,7 +53,58 @@
     .label {
       font-size: 11px;
       color: #666;
-      margin-top: 6px;
+      margin-bottom: 14px;
+    }
+
+    /* Toggle switch */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px solid #333;
+      font-size: 13px;
+      color: #ccc;
+    }
+    .toggle {
+      position: relative;
+      width: 40px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .toggle .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: #555;
+      border-radius: 22px;
+      transition: background 0.2s;
+    }
+    .toggle .slider::before {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      top: 3px;
+      left: 3px;
+      transition: transform 0.2s;
+    }
+    .toggle input:checked + .slider {
+      background: #4fc3f7;
+    }
+    .toggle input:checked + .slider::before {
+      transform: translateX(18px);
+    }
+    .toggle-label {
+      cursor: pointer;
     }
   </style>
 </head>
@@ -63,6 +114,15 @@
   <div class="boost-value" id="boostValue">1.0x</div>
   <input type="range" id="slider" min="1" max="5" step="0.1" value="1">
   <div class="label">Drag to adjust boost level</div>
+
+  <div class="toggle-row">
+    <label class="toggle">
+      <input type="checkbox" id="protectionToggle" checked>
+      <span class="slider"></span>
+    </label>
+    <span class="toggle-label" id="protectionLabel">Quality Protection</span>
+  </div>
+
   <script src="popup.js"></script>
 </body>
 </html>

@@ -1,19 +1,19 @@
 // Volume Booster — routes media elements through a GainNode for >1x amplification
 let audioContext = null;
-const elementMap = new Map(); // HTMLMediaElement → { source, gain }
+const elementMap = new Map(); // HTMLMediaElement → { source, gain, compressor }
 let boostLevel = 1;
+let protectionEnabled = true;
 
-// Restore persisted boost level, then init
-chrome.storage.sync.get({ boostLevel: 1 }, (data) => {
+// Restore persisted settings, then init
+chrome.storage.sync.get({ boostLevel: 1, qualityProtection: true }, (data) => {
   boostLevel = data.boostLevel;
+  protectionEnabled = data.qualityProtection;
   init();
 });
 
 function init() {
-  // Wire existing elements that are already playing
   document.querySelectorAll('audio, video').forEach(wireElement);
 
-  // Watch for dynamically added elements
   const observer = new MutationObserver((mutations) => {
     for (const m of mutations) {
       for (const node of m.addedNodes) {
@@ -25,7 +25,6 @@ function init() {
   });
   observer.observe(document.body, { childList: true, subtree: true });
 
-  // Resume AudioContext on first user click (autoplay policy workaround)
   document.addEventListener('click', resumeContext, { once: true });
 }
 
@@ -38,19 +37,16 @@ function resumeContext() {
 function wireElement(el) {
   if (elementMap.has(el)) return;
 
-  // Defer until the element has a source
   if (!el.src && !el.srcObject) {
     el.addEventListener('loadedmetadata', () => wireElement(el), { once: true });
     return;
   }
 
-  // Defer until playback starts (avoids wiring elements that never play)
   if (el.paused) {
     el.addEventListener('play', () => wireElement(el), { once: true });
     return;
   }
 
-  // The element is actively playing — wire it up
   el.volume = 1;
 
   try {
@@ -62,17 +58,37 @@ function wireElement(el) {
     const gain = audioContext.createGain();
     gain.gain.value = boostLevel;
 
-    source.connect(gain);
-    gain.connect(audioContext.destination);
+    // DynamicsCompressorNode acts as a limiter to prevent hard clipping
+    const compressor = audioContext.createDynamicsCompressor();
+    setCompressorParams(compressor);
 
-    elementMap.set(el, { source, gain });
+    source.connect(gain);
+    gain.connect(compressor);
+    compressor.connect(audioContext.destination);
+
+    elementMap.set(el, { source, gain, compressor });
   } catch (e) {
     // Element already connected to another AudioContext (e.g. YouTube)
-    // Can't boost via this method — skip silently
   }
 }
 
-// Update every connected gain node
+// Set compressor params for protection or transparent pass-through
+function setCompressorParams(compressor) {
+  if (protectionEnabled) {
+    compressor.threshold.value = -6;   // dB — start compressing above this
+    compressor.knee.value      = 6;    // dB — smooth transition into compression
+    compressor.ratio.value     = 12;   // :1 — strong limiting
+    compressor.attack.value    = 0.003; // seconds — fast enough to catch transients
+    compressor.release.value   = 0.1;  // seconds — quick recovery
+  } else {
+    compressor.threshold.value = 0;
+    compressor.ratio.value     = 1;    // 1:1 = no compression
+    compressor.knee.value      = 0;
+    compressor.attack.value    = 0;
+    compressor.release.value   = 0;
+  }
+}
+
 function updateAllGains(value) {
   for (const [el, { gain }] of elementMap.entries()) {
     if (el.isConnected) {
@@ -83,12 +99,24 @@ function updateAllGains(value) {
   }
 }
 
-// Listen for live boost changes from the popup
+function updateAllCompressors() {
+  for (const [el, { compressor }] of elementMap.entries()) {
+    if (el.isConnected) {
+      setCompressorParams(compressor);
+    }
+  }
+}
+
+// Listen for live updates from the popup
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === 'setBoost') {
     boostLevel = msg.value;
     resumeContext();
     updateAllGains(boostLevel);
+    sendResponse({ ok: true });
+  } else if (msg.type === 'setProtection') {
+    protectionEnabled = msg.value;
+    updateAllCompressors();
     sendResponse({ ok: true });
   }
 });
