@@ -51,10 +51,10 @@ zip.writeZip('volume-booster-edge.zip');
 
 ### 0. Host the privacy policy
 
-`PRIVACY.md` in the repo serves as your privacy policy. The URL to enter in the submission form is:
+`PRIVACY.txt` in the repo serves as your privacy policy. The URL to enter in the submission form is:
 
 ```
-https://github.com/jingshouyan/volume-booster/blob/main/PRIVACY.md
+https://github.com/jingshouyan/volume-booster/blob/main/PRIVACY.txt
 ```
 
 No need to set up a separate site — GitHub's raw file view is sufficient.
@@ -73,7 +73,7 @@ No need to set up a separate site — GitHub's raw file view is sufficient.
 | **Screenshot** (1–6, at least 1280×800) | Take a screenshot of the popup open over a video page (e.g., YouTube). Show the slider at 2.5× with Quality Protection toggled on. |
 | **Small promotional tile** (440×280) | Can be a cropped version of the screenshot or the icon on a simple background |
 | **Large promotional tile** (1400×560) | Required for store visibility — same as above at larger size |
-| **Privacy policy URL** | `https://github.com/jingshouyan/volume-booster/blob/main/PRIVACY.md` — already in the repo, said it simply: no data collected. |
+| **Privacy policy URL** | `https://github.com/jingshouyan/volume-booster/blob/main/PRIVACY.txt` — already in the repo, said it simply: no data collected. |
 | **Website URL** | Your GitHub repo link: `https://github.com/jingshouyan/volume-booster` |
 | **Support contact info** | Your email or GitHub issues URL |
 | **Category** | Productivity → Tools |
