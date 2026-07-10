@@ -123,7 +123,7 @@ API: `chrome.storage.sync` — syncs across Chrome installs when the user is sig
 | **MutationObserver (not polling)** | Catches dynamically injected elements efficiently with no CPU overhead when the DOM is static. |
 | **Content script isolated world** | The AudioContext and gain graph live in the extension's world, not the page's JS — no conflict with page scripts. |
 | **`document_idle` injection timing** | Balances catching early-loaded elements with not blocking page render. Elements loaded before injection are caught by the initial `querySelectorAll`. |
-| **No icons bundled** | Minimalist approach — Chrome uses a default puzzle-piece icon. Add `icons/` if publishing to the Chrome Web Store. |
+| **Circular icon with cyan badge** | Dark circle (`#1a1a2e`) with white speaker, cyan sound waves, and a cyan "+" badge in the top-right corner. The plus sign distinguishes it from a standard volume icon and communicates "booster." Source SVG in `icons/icon.svg`; PNGs at 16, 48, 128 generated via `sharp`. |
 
 ---
 
