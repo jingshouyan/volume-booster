@@ -1,0 +1,39 @@
+# Privacy Policy — Volume Booster
+
+**Last updated:** 2025
+
+Volume Booster does **not** collect, store, transmit, or share any personal data.
+
+## What the extension does
+
+Volume Booster routes `<audio>` and `<video>` elements through a Web Audio gain graph to amplify volume beyond the browser's native 100% maximum. All audio processing happens entirely within your browser — no audio data ever leaves your device.
+
+## What is stored locally
+
+The only data persisted is:
+
+| Data | Storage mechanism | Purpose | Leaves your browser? |
+|------|-------------------|---------|----------------------|
+| Boost level (a number between 1.0 and 5.0) | `chrome.storage.sync` | Remembers your chosen volume boost across page loads and browser restarts | No — `chrome.storage.sync` is synced across the user's own browsers via their browser account, but never transmitted to extension developers or third parties |
+
+## What is NOT collected
+
+- No browsing history
+- No page content, URLs, or titles
+- No audio or video data
+- No personal identifiers
+- No analytics or telemetry
+- No cookies
+- No network requests are made by the extension
+
+## Third parties
+
+Volume Booster has no dependencies on external servers, APIs, or third-party services. The extension package contains no remote code.
+
+## Changes to this policy
+
+If this policy changes, the version in this repository will be updated. Since the extension collects no data, significant changes are unlikely.
+
+---
+
+**Contact:** [GitHub Issues](https://github.com/jingshouyan/volume-booster/issues)

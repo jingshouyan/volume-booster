@@ -49,6 +49,16 @@ zip.writeZip('volume-booster-edge.zip');
 
 > If you've already published under this account, skip straight to **Create a new extension**.
 
+### 0. Host the privacy policy
+
+`PRIVACY.md` in the repo serves as your privacy policy. The URL to enter in the submission form is:
+
+```
+https://github.com/jingshouyan/volume-booster/blob/main/PRIVACY.md
+```
+
+No need to set up a separate site — GitHub's raw file view is sufficient.
+
 ### 3. Submit the extension
 
 1. In Partner Center, go to **Edge Extensions** → **Overview** → **Create new extension**
@@ -63,7 +73,7 @@ zip.writeZip('volume-booster-edge.zip');
 | **Screenshot** (1–6, at least 1280×800) | Take a screenshot of the popup open over a video page (e.g., YouTube). Show the slider at 2.5× with Quality Protection toggled on. |
 | **Small promotional tile** (440×280) | Can be a cropped version of the screenshot or the icon on a simple background |
 | **Large promotional tile** (1400×560) | Required for store visibility — same as above at larger size |
-| **Privacy policy URL** | If you don't track anything (this extension doesn't), a simple GitHub Pages or gist page stating "This extension collects no data" suffices. Required by the store. |
+| **Privacy policy URL** | `https://github.com/jingshouyan/volume-booster/blob/main/PRIVACY.md` — already in the repo, said it simply: no data collected. |
 | **Website URL** | Your GitHub repo link: `https://github.com/jingshouyan/volume-booster` |
 | **Support contact info** | Your email or GitHub issues URL |
 | **Category** | Productivity → Tools |
@@ -94,14 +104,4 @@ Edge extension review typically takes **1–3 business days**. They verify:
 - **No code changes needed** — Edge's extension API is identical to Chrome's for the APIs we use (`storage`, `runtime.onMessage`, `tabs.sendMessage`, `tabs.query`).
 - **Updates** follow the same process: bump the `version` field in `manifest.json`, re-zip, and upload a new submission.
 
----
 
-## Privacy policy template
-
-Since this extension collects **no data**, a simple statement is enough. Host it somewhere public (GitHub Pages, a Gist, or your own site) and link it in the submission:
-
-> **Volume Booster Privacy Policy**
->
-> Volume Booster does not collect, store, transmit, or share any personal data. All audio processing happens entirely within your browser using the Web Audio API. The only persisted setting (your chosen boost level) is stored locally via `chrome.storage.sync` and never leaves your browser.
->
-> No analytics, no trackers, no external servers.
